@@ -55,21 +55,22 @@ const CassettePlayer: React.FC = () => {
               borderRadius: theme.borderRadius.md,
               boxShadow: theme.shadows.lg,
               padding: theme.spacing.md,
-              marginBottom: '10px',
+              zIndex: 1000,
+              marginBottom: '5px',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column'
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 style={{
+            <h2 style={{
               margin: `0 0 ${theme.spacing.sm} 0`,
               color: theme.colors.primary,
               fontSize: '1rem',
               fontWeight: 500
             }}>
               Select a Song
-            </h3>     
+            </h2>     
             <div style={{
               display: 'flex',
               gap: theme.spacing.xs,
@@ -84,7 +85,7 @@ const CassettePlayer: React.FC = () => {
                   border: `1px solid ${theme.colors.border}`,
                   borderRadius: '15px',
                   padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-                  fontSize: '0.7rem',
+                  fontSize: '1rem',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
                 }}
@@ -101,7 +102,7 @@ const CassettePlayer: React.FC = () => {
                     border: `1px solid ${theme.colors.border}`,
                     borderRadius: '15px',
                     padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-                    fontSize: '0.7rem',
+                    fontSize: '1rem',
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
                     transition: 'all 0.2s ease'
@@ -159,8 +160,8 @@ const CassettePlayer: React.FC = () => {
           style={{
             position: 'relative',
             cursor: 'pointer',
-            width: '200px',
-            height: '200px',
+            width: '300px',
+            height: '300px',
             overflow: 'hidden',
           }}
         >
