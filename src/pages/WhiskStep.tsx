@@ -16,7 +16,6 @@ const WhiskStep: React.FC = () => {
   
   const [whiskCount, setWhiskCount] = useState<number>(0);
   const [showPerfect, setShowPerfect] = useState<boolean>(false);
-  const [isOverBowl, setIsOverBowl] = useState<boolean>(false);
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
   
   const TARGET_WHISKS = 15;
@@ -28,8 +27,13 @@ const WhiskStep: React.FC = () => {
   const isWhisking = useRef<boolean>(false);
   const [mousePos, setMousePos] = useState<Position>({ x: 0, y: 0 });
   
-  const foamLevel = Math.min(100, (whiskCount / TARGET_WHISKS) * 50);
-  const matchaColor = `rgba(57, 96, 60, ${0.8 + (whiskCount / TARGET_WHISKS) * 0.15})`;
+
+  const getBowlImage = () => {
+    const progress = whiskCount / TARGET_WHISKS;
+    if (progress < 0.33) return '/images/bowls/bowl1.png';
+    if (progress < 0.66) return '/images/bowls/bowl2.png';
+    return '/images/bowls/bowl3.png';
+  };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -54,7 +58,7 @@ const WhiskStep: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isMouseDown && isOverBowl) {
+    if (isMouseDown) {
       const now = Date.now();
       const deltaY = Math.abs(mousePos.y - lastYPos.current);
       const deltaTime = now - lastTime.current;
@@ -87,10 +91,8 @@ const WhiskStep: React.FC = () => {
       lastYPos.current = mousePos.y;
       lastTime.current = now;
     }
-  }, [mousePos, isMouseDown, isOverBowl, showPerfect, goToStep]);
+  }, [mousePos, isMouseDown, showPerfect, goToStep]);
 
-  const handleBowlEnter = () => setIsOverBowl(true);
-  const handleBowlLeave = () => setIsOverBowl(false);
   const getWhiskMessage = (): string => {
     if (whiskCount === 0) return 'Drag the whisk up and down to mix the matcha';
     if (whiskCount < TARGET_WHISKS - TOLERANCE) return `Keep whisking... ${whiskCount}/${TARGET_WHISKS}`;
@@ -126,29 +128,31 @@ const WhiskStep: React.FC = () => {
         <div className="whisk-content">
           <h2>Whisk the Matcha</h2>
 
-          <div
+          <div 
             ref={bowlRef}
             className="whisk-bowl"
             style={{
-              backgroundColor: theme.colors.background,
-              border: `4px solid ${theme.colors.primary}`,
+              position: 'relative',
+              width: '330px',
+              height: '300px',
+              margin: '0 auto 2rem',
+              cursor: 'none',
             }}
           >
-            <motion.div
-              className="matcha-liquid"
-              onMouseEnter={handleBowlEnter}
-              onMouseLeave={handleBowlLeave}
+            <img
+              src={getBowlImage()}
+              alt="Matcha bowl"
               style={{
-                backgroundColor: matchaColor,
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                position: 'relative',
+                zIndex: 1,
+                pointerEvents: 'none',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
               }}
-            >
-              <div
-                className="foam"
-                style={{
-                  transform: `translateY(${foamLevel}%)`,
-                }}
-              />
-            </motion.div>
+            />
           </div>
 
           <p className="whisk-message">
